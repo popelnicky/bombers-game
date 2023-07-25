@@ -1,0 +1,25 @@
+{
+  "name": "bombers-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.ts",
+  "type": "module",
+  "scripts": {
+    "start": "webpack-dev-server --config ./build_configurations/webpack.config.js --mode development --devtool inline-source-map",
+    "build": "webpack --config ./build_configurations/webpack.config.js --mode production"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "pixi.js": "^7.2.4",
+    "rxjs": "^7.8.1"
+  }
+}
