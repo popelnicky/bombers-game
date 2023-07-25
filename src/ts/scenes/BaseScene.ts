@@ -12,6 +12,7 @@ export abstract class BaseScene {
 
   constructor(public name: string, private game: Application) {
     this.view = new Container();
+    this.connector$ = new Subject<string>();
     
     this.onUpdateHandler = (delta: number) => this.onUpdate(delta);
   }
@@ -20,11 +21,8 @@ export abstract class BaseScene {
     return this.connector$;
   }
 
-  // Add scene into the game's stage, init scene, resize it first time,
-  // create connection stream for the scenes manager, and start listening game's ticker
+  // Add scene into the game's stage, init scene, resize it first time, and start listening game's ticker
   start(): void {
-    this.connector$ = new Subject<string>();
-
     this.game.stage.addChild(this.view);
 
     this.init();
@@ -36,7 +34,7 @@ export abstract class BaseScene {
   // Close connection with scenes manager, stop listening game's ticker,
   // and take out scene from the game's stage
   stop(): void {
-    this.connector$?.complete();
+    // this.connector$?.complete();
 
     this.game.ticker.remove(this.onUpdateHandler);
 

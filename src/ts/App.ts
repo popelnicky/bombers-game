@@ -35,7 +35,7 @@ export class App {
     document.body.appendChild(this.game.view);
 
     // Start the game working
-    this.scenesManager.start(SceneNames.GameScene);
+    this.scenesManager.start(SceneNames.PreloaderScene);
   }
 
   // According to the resolution property resize the game for desktop and mobile representations

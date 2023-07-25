@@ -1,0 +1,10 @@
+{
+  "images": [
+    {
+      "introBack": "assets/images/intro_back.png"
+    },
+    {
+      "gameBack": "assets/images/game_field.png"
+    }
+  ]
+}
