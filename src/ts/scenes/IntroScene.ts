@@ -7,11 +7,15 @@ export class IntroScene extends BaseScene {
     super(SceneNames.IntroScene, gameRef);
   }
 
-  protected init(): void {}
+  protected init(): void {
+    this.goToNextScene();
+  }
 
   onResize(width: number, height: number, scale: number = 1.0): void {}
 
-  protected goToNextScene(): void {}
+  protected goToNextScene(): void {
+    this.connector$?.next(SceneNames.GameScene);
+  }
 
   protected destroy(): void {}
 }

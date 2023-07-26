@@ -1,8 +1,9 @@
 import { Application, Assets } from "pixi.js";
 import { SceneNames } from "../constants/SceneNames";
 import { BaseScene } from "./BaseScene";
-import { GameTextures, ImagesBundleConfig } from "../constants/types";
-import { textures } from "../constants/textures";
+import { ImagesBundleConfig } from "../constants/types";
+import { GameTextures } from "../models/GameTextures";
+import { Container as IoCContainer, Scope } from "typescript-ioc";
 
 export class PreloaderScene extends BaseScene {
   constructor(gameRef: Application) {
@@ -24,15 +25,15 @@ export class PreloaderScene extends BaseScene {
       aliases.push(key);
     }
 
-    // TODO: It would be much better to move it on decorators and DI
-    // TODO: Implement Loading UI
-    const data = await Assets.load(aliases, (progress) => {
+    const textures = await Assets.load(aliases, (progress) => {
       console.log(progress);
     }) as GameTextures;
 
-    for(let key of Object.keys(data)) {
-      (textures as any)[key] = data[key];
-    }
+    IoCContainer
+      .bind(GameTextures)
+      .to(GameTextures)
+      .factory(() => textures)
+      .scope(Scope.Singleton);
 
     this.goToNextScene();
   }
@@ -43,5 +44,7 @@ export class PreloaderScene extends BaseScene {
     this.connector$?.next(SceneNames.GameScene);
   }
 
-  protected destroy(): void {}
+  protected destroy(): void {
+    this.connector$?.complete();
+  }
 }

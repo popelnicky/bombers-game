@@ -9,7 +9,3 @@ type ImageConfig = {
 export type ImagesBundleConfig = {
     readonly images: ImageConfig[];
 };
-
-export type GameTextures = {
-    readonly [key: string]: Texture<Resource>;
-};
