@@ -4,7 +4,28 @@
       "introBack": "assets/images/intro_back.png"
     },
     {
-      "gameBack": "assets/images/game_field.png"
+      "ground": "assets/images/game_field.png"
+    },
+    {
+      "wall": "assets/images/wall.png"
+    },
+    {
+      "westPlayer": "assets/images/west_player.png"
+    },
+    {
+      "eastPlayer": "assets/images/east_player.png"
+    },
+    {
+      "gasBomb": "assets/images/gas_bomb.png"
+    },
+    {
+      "lightBomb": "assets/images/light_bomb.png"
+    },
+    {
+      "fireBomb": "assets/images/fire_bomb.png"
+    },
+    {
+      "target": "assets/images/target.png"
     }
   ]
 }

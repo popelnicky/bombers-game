@@ -1,8 +1,9 @@
 import { Application, Container } from "pixi.js";
 import { Subject } from "rxjs";
+import { IDisposable, IInitiable, IResizable } from "../constants/types";
 
 // A heart of the scene with all needed propeties and methods
-export abstract class BaseScene {
+export abstract class BaseScene implements IResizable, IDisposable, IInitiable {
   // An arrow-function which binds 'this' context for onUpdate method in game.ticker
   // Also a possibility of subscribe/unsubscribe on game.ticker
   private onUpdateHandler: (delta: number) => void;
@@ -53,8 +54,8 @@ export abstract class BaseScene {
   protected abstract goToNextScene(): void;
 
   // Add UI on the scene, init needed properties and values
-  protected abstract init(): void;
+  abstract init(): void;
 
   // Clear useless resources
-  protected abstract destroy(): void;
+  abstract destroy(): void;
 }

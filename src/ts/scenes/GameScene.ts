@@ -2,28 +2,35 @@ import { Application } from "pixi.js";
 import { BaseScene } from "./BaseScene";
 import { SceneNames } from "../constants/SceneNames";
 import { GameBoard } from "../gameplay/GameBoard";
-import { GameTextures } from "../models/GameTextures";
-import { Inject } from "typescript-ioc";
 
 export class GameScene extends BaseScene {
-  @Inject declare private textures: GameTextures;
   private gameBoard!: GameBoard;
 
   constructor(gameRef: Application) {
     super(SceneNames.GameScene, gameRef);
   }
 
-  protected init(): void {
+  init(): void {
     this.gameBoard = new GameBoard();
+    this.gameBoard.init();
 
-    console.log(this.textures);
+    this.view.addChild(this.gameBoard.view);
   }
 
-  onResize(width: number, height: number, scale: number = 1.0): void {}
+  protected onUpdate(delta: number): void {
+    this.gameBoard.onUpdate(delta);
+  }
+
+  onResize(width: number, height: number, scale: number = 1.0): void {
+    this.gameBoard.onResize(width, height, scale);
+  }
 
   protected goToNextScene(): void {
     this.connector$?.next(SceneNames.IntroScene);
   }
 
-  protected destroy(): void {}
+  destroy(): void {
+    this.view.removeChild(this.gameBoard.view);
+    this.gameBoard.destroy();
+  }
 }

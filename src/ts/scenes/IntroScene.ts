@@ -7,7 +7,7 @@ export class IntroScene extends BaseScene {
     super(SceneNames.IntroScene, gameRef);
   }
 
-  protected init(): void {
+  init(): void {
     this.goToNextScene();
   }
 
@@ -17,5 +17,5 @@ export class IntroScene extends BaseScene {
     this.connector$?.next(SceneNames.GameScene);
   }
 
-  protected destroy(): void {}
+  destroy(): void {}
 }

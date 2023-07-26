@@ -1,4 +1,4 @@
-import { Application, Assets } from "pixi.js";
+import { Application, Assets, Spritesheet } from "pixi.js";
 import { SceneNames } from "../constants/SceneNames";
 import { BaseScene } from "./BaseScene";
 import { ImagesBundleConfig } from "../constants/types";
@@ -10,7 +10,7 @@ export class PreloaderScene extends BaseScene {
     super(SceneNames.PreloaderScene, gameRef);
   }
 
-  protected init(): void {}
+  init(): void {}
 
   async start(): Promise<void> {
     super.start();
@@ -26,8 +26,10 @@ export class PreloaderScene extends BaseScene {
     }
 
     const textures = await Assets.load(aliases, (progress) => {
-      console.log(progress);
+      // TODO: The plase where can be implemented dynamics for the loading bar on this scene
     }) as GameTextures;
+
+    textures.explosion = await Assets.load('https://pixijs.com/assets/spritesheet/mc.json') as Spritesheet;
 
     IoCContainer
       .bind(GameTextures)
@@ -44,7 +46,7 @@ export class PreloaderScene extends BaseScene {
     this.connector$?.next(SceneNames.GameScene);
   }
 
-  protected destroy(): void {
+  destroy(): void {
     this.connector$?.complete();
   }
 }

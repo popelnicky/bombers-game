@@ -1,8 +1,8 @@
 import { Application } from "pixi.js";
 import { BaseScene } from "./BaseScene";
-import { Ctor } from "../constants/types";
+import { Ctor, IResizable } from "../constants/types";
 
-export class ScenesManager {
+export class ScenesManager implements IResizable {
   private scenes: BaseScene[];
   private currentScene: BaseScene | null | undefined;
   private started: boolean = false;
