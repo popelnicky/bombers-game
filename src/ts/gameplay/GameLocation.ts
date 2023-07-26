@@ -24,11 +24,12 @@ import { Subject } from "rxjs";
 import { GasBomb } from "./bombs/GasBomb";
 import { LightBomb } from "./bombs/LightBomb";
 import { FireBomb } from "./bombs/FireBomb";
+import { GameStatus } from "../constants/GameStatus";
 
 export class GameLocation implements IResizable, IDisposable, IInitiable {
   @Inject private declare textures: GameTextures;
 
-  private connector$: Subject<void>;
+  private connector$: Subject<GameStatus>;
   private readonly SCALE_Y: number = 0.5;
   private ground!: Graphics;
   private westWall!: Sprite;
@@ -57,10 +58,10 @@ export class GameLocation implements IResizable, IDisposable, IInitiable {
   view!: Container;
 
   constructor() {
-    this.connector$ = new Subject<void>();
+    this.connector$ = new Subject<GameStatus>();
   }
 
-  get connection(): Subject<void> {
+  get connection(): Subject<GameStatus> {
     return this.connector$;
   }
 
@@ -208,6 +209,8 @@ export class GameLocation implements IResizable, IDisposable, IInitiable {
   }
 
   private async exploseBomb(): Promise<void> {
+    let enemyHP = 1;
+
     this.view.removeChild(this.target);
 
     const exploseArea = await this.throwingBomb.explose();
@@ -215,13 +218,20 @@ export class GameLocation implements IResizable, IDisposable, IInitiable {
     const isIntesect = this.isIntersect(exploseArea, enemyArea);
     
     if (isIntesect) {
-      console.log(this.enemyPlayer.loseHealth(this.throwingBomb.type));
+      enemyHP = this.enemyPlayer.loseHealth(this.throwingBomb.type);
     }
 
     this.view.removeChild(this.throwingBomb.view);
     this.throwingBomb.view.x = this.throwingBomb.view.y = 0;
+    this.throwingBomb.view.rotation = 0;
 
-    this.connector$.next();
+    if (enemyHP < 1) {
+      this.connector$.next(GameStatus.GameOver);
+
+      return;
+    }
+
+    this.connector$.next(GameStatus.Continue);
   }
 
   private isIntersect(exploseArea: Rectangle, enemyArea: Rectangle) {
@@ -244,6 +254,8 @@ export class GameLocation implements IResizable, IDisposable, IInitiable {
       0,
       this.endTargetPoint.y
     );
+
+    this.throwingBomb.view.rotation += 0.01;
 
     this.throwingBombStep += 0.025;
   }

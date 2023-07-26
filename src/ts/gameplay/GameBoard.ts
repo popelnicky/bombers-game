@@ -3,8 +3,11 @@ import { GameLocation } from "./GameLocation";
 import { IDisposable, IInitiable, IResizable, Shot } from "../constants/types";
 import { BombPanel } from "./BombPanel";
 import { PlayerType } from "../constants/PlayerType";
+import { GameStatus } from "../constants/GameStatus";
+import { Subject } from "rxjs";
 
 export class GameBoard implements IResizable, IDisposable, IInitiable {
+  private connector$: Subject<void>;
   private gameLocation!: GameLocation;
   private westBombPanel!: BombPanel;
   private eastBombPanel!: BombPanel;
@@ -13,7 +16,13 @@ export class GameBoard implements IResizable, IDisposable, IInitiable {
   
   view!: Container;
 
-  constructor() {}
+  constructor() {
+    this.connector$ = new Subject<void>();
+  }
+
+  get connection(): Subject<void> {
+    return this.connector$;
+  }
 
   init(): void {
     this.view = new Container();
@@ -40,7 +49,15 @@ export class GameBoard implements IResizable, IDisposable, IInitiable {
 
   private initListeners(): void {
     this.gameLocation.connection.subscribe({
-        next: () => this.canPlay(),
+        next: (status: GameStatus) => {
+          if (status === GameStatus.GameOver) {
+            this.connector$.next();
+
+            return;
+          }
+
+          this.canPlay();
+        },
     });
 
     for (let panel of this.panels) {

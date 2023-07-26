@@ -4,6 +4,7 @@ import { Resource, Spritesheet, Texture } from "pixi.js";
 @Singleton
 export class GameTextures {
     readonly introBack!: Texture<Resource>;
+    readonly logo!: Texture<Resource>;
     readonly ground!: Texture<Resource>;
     readonly wall!: Texture<Resource>;
     readonly westPlayer!: Texture<Resource>;

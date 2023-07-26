@@ -1,4 +1,11 @@
-import { AnimatedSprite, Container, Rectangle, Resource, Sprite, Texture } from "pixi.js";
+import {
+  AnimatedSprite,
+  Container,
+  Rectangle,
+  Resource,
+  Sprite,
+  Texture,
+} from "pixi.js";
 import { IBomb, IInitiable } from "../../constants/types";
 import { BombType } from "../../constants/BombType";
 import { Subject } from "rxjs";
@@ -62,19 +69,21 @@ export abstract class BaseBomb implements IInitiable, IBomb {
 
     return new Promise((resolve, reject) => {
       this.explosion.x = this.sprite.x;
-    this.explosion.y = this.sprite.y;
+      this.explosion.y = this.sprite.y;
 
-    this.view.removeChild(this.sprite);
-    this.view.addChild(this.explosion);
+      const exploseArea = this.sprite.getBounds();
 
-    this.explosion.onComplete = () => {
-      this.view.removeChild(this.explosion);
-      this.view.addChild(this.sprite);
-      this.explosion.gotoAndStop(0);
-      
-      resolve(this.explosion.getBounds());
-    };
-    this.explosion.play();
+      this.view.removeChild(this.sprite);
+      this.view.addChild(this.explosion);
+
+      this.explosion.onComplete = () => {
+        this.view.removeChild(this.explosion);
+        this.view.addChild(this.sprite);
+        this.explosion.gotoAndStop(0);
+
+        resolve(exploseArea);
+      };
+      this.explosion.play();
     });
   }
 

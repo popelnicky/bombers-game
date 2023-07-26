@@ -34,10 +34,12 @@ export class Player implements IInitiable {
       rest = 0;
     }
 
+    this.hp = rest;
     this.veiw.removeChild(this.healthBar);
 
-    this.healthBar = this.drawHealthBar(this.veiw.width * ((rest * 100) / this.health))
-
+    const width = this.veiw.width * (rest / this.health);
+    
+    this.healthBar = this.drawHealthBar(width);
     this.veiw.addChild(this.healthBar);
     
     return this.hp;
@@ -50,7 +52,7 @@ export class Player implements IInitiable {
     bar.drawRect(
       -this.veiw.width * 0.5,
       -this.veiw.height * 0.6,
-      this.veiw.width,
+      width,
       10
     );
     bar.endFill();

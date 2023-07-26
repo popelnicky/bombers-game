@@ -4,6 +4,9 @@
       "introBack": "assets/images/intro_back.png"
     },
     {
+      "logo": "assets/images/logo.png"
+    },
+    {
       "ground": "assets/images/game_field.png"
     },
     {
