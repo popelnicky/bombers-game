@@ -22,7 +22,9 @@ export class Player implements IInitiable {
     this.veiw = Sprite.from(this.textures[this.type]);
     this.veiw.anchor.set(0.5);
 
-    this.healthBar = this.drawHealthBar(this.veiw.width);
+    this.healthBar = new Graphics();
+    
+    this.drawHealthBar(this.veiw.width);
 
     this.veiw.addChild(this.healthBar);
   }
@@ -35,28 +37,23 @@ export class Player implements IInitiable {
     }
 
     this.hp = rest;
-    this.veiw.removeChild(this.healthBar);
 
     const width = this.veiw.width * (rest / this.health);
     
-    this.healthBar = this.drawHealthBar(width);
-    this.veiw.addChild(this.healthBar);
+    this.drawHealthBar(width);
     
     return this.hp;
   }
 
-  private drawHealthBar(width: number): Graphics {
-    const bar = new Graphics();
-
-    bar.beginFill(this.hpColor);
-    bar.drawRect(
+  private drawHealthBar(width: number): void {
+    this.healthBar.clear();
+    this.healthBar.beginFill(this.hpColor);
+    this.healthBar.drawRect(
       -this.veiw.width * 0.5,
       -this.veiw.height * 0.6,
       width,
       10
     );
-    bar.endFill();
-
-    return bar;
+    this.healthBar.endFill();
   }
 }
